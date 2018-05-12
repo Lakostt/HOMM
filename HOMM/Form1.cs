@@ -50,7 +50,7 @@ namespace HOMM
             public Centaur(int x, int y, int count, bool friend, Form1 f)
             {
                 Health = 10;
-                Speed = 3;
+                Speed = 2;
                 Damage = 4;
                 X = x; Y = y;
                 Count = count;
@@ -150,9 +150,10 @@ namespace HOMM
         {
             path = new List<Vector2>();
             // искать
+            UpdatePath();
             pathNumber[tempX, tempY] = 0;
-            UpdatePath(); // Обновить
-            for (int i = 1; ; i++) // Счетчик
+             // Обновить
+            for (byte i = 1; ; i++) // Счетчик
             {
                 for(int y = 0; y < 8; y++) // Счетчик строчек поля
                 {
@@ -168,7 +169,7 @@ namespace HOMM
                                     if (field[a, b].BackgroundImage != null) continue;
                                     if (pathNumber[a, b] != 255) continue;
 
-                                    pathNumber[a, b] = 1;
+                                    pathNumber[a, b] = i;
                                 }
                             }
                         }
@@ -176,16 +177,33 @@ namespace HOMM
                 }
                 if (pathNumber[X, Y] != 255) break;
             }
-            for(int tmp = pathNumber[X, Y]; tmp > 0; tmp--)
+            string text = "";
+            for(int y = 0; y < 8; y++)
+            {
+                for (int x = 0; x < 10; x++)
+                {
+                    text += pathNumber[x, y] + " ";
+                }
+                text += "\n";
+            }
+            MessageBox.Show(text);
+            path.Add(new Vector2(X, Y));
+            for (int tmp = pathNumber[X, Y]; tmp > 1; tmp--)
             {
                 for(int b = Y - 1; b <= Y + 1; b++)
                 {
-                    for(int a = X - 1; a <= X; a++)
+                    for(int a = X - 1; a <= X+1; a++)
                     {
-
+                        if (b < 0 || b > 7 || a < 0 || a > 9) continue;
+                        if (pathNumber[a, b] == tmp - 1)
+                        {
+                            X = a; Y = b;
+                            path.Add(new Vector2(X, Y));
+                        }
                     }
                 }
             }
+            i = path.Count - 1;
             timer1.Start();
         }
 
