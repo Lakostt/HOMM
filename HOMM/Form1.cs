@@ -148,8 +148,10 @@ namespace HOMM
         }
         void FindPath()
         {
-            pathNumber[tempX, tempY] = 0;
             path = new List<Vector2>();
+            // искать
+            pathNumber[tempX, tempY] = 0;
+            UpdatePath(); // Обновить
             for (int i = 1; ; i++) // Счетчик
             {
                 for(int y = 0; y < 8; y++) // Счетчик строчек поля
@@ -173,6 +175,16 @@ namespace HOMM
                     }
                 }
                 if (pathNumber[X, Y] != 255) break;
+            }
+            for(int tmp = pathNumber[X, Y]; tmp > 0; tmp--)
+            {
+                for(int b = Y - 1; b <= Y + 1; b++)
+                {
+                    for(int a = X - 1; a <= X; a++)
+                    {
+
+                    }
+                }
             }
             timer1.Start();
         }
